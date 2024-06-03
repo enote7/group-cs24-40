@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Chat Rooms</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            background-color: rgba(0, 0, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        input[type="text"],
+        input[type="button"] {
+            display: block;
+            margin: 10px auto;
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            text-transform: uppercase;
+            color: #333;
+            background-color: #fff;
+        }
+
+        input[type="button"] {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="button"]:hover {
+            background-color: #555;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: rgba(6, 124, 250, 0.65);
+            padding: 10px 0;
+            width: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            background-color: #0000006b;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 0, 64, 0.6);
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .username {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        a.close-btn {
+            background-color: rgba(31, 161, 179, 0.82);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            bottom: 20px;
+        }
+
+        a.close-btn:hover {
+            background-color: #bbb;
+        }
+        .animation-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 10px solid;
+            border-color: red yellow red yellow;
+            animation: spin 2s linear infinite;
+        }
+ 
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'lobby' %}">Lobby</a></li>
+            <li><a href="{% url 'email_form' %}">Email participants</a></li>
+            <li><a href="{% url 'admin_dashboard' %}">Admin Dash</a></li>
+            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <div class="animation-container"></div>
+    <h1>Provide Room Name</h1>
+    <input id="room-name-input" type="text" size="100" placeholder="Enter room name">
+    <input id="room-name-submit" type="button" value="Enter">
+    <a href="{% url 'home' %}" class="close-btn">Go to Home</a>
+
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function (e) {
+            if (e.key === 'Enter') {
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function (e) {
+            var roomName = document.querySelector('#room-name-input').value.toUpperCase();
+            window.location.pathname = 'chat/' + roomName + '/';
+        };
+    </script>
+</body>
+
+</html>

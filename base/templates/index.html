@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invic System</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'images/q1.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            transition: background-image 3s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ff0000;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.493);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        p {
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            font-size: 1em;
+            color: #000;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #15ff00;
+        }
+        .animation-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 10px solid;
+            border-color: red yellow red yellow;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Media query for small devices */
+        @media only screen and (max-width: 600px) {
+            .container {
+                padding: 20px; /* Adjust padding for smaller screens */
+            }
+
+            .logo img {
+                width: 80px; /* Adjust logo size for smaller screens */
+            }
+
+            h1 {
+                font-size: 1.8em; /* Adjust heading size for smaller screens */
+            }
+
+            p {
+                font-size: 1em; /* Adjust paragraph size for smaller screens */
+            }
+
+            .btn {
+                padding: 10px 20px; /* Adjust button padding for smaller screens */
+                font-size: 0.8em; /* Adjust button font size for smaller screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="animation-container"></div>
+        <div class="logo">
+            <img src="{% static 'images/inc.jpg' %}" alt="Invic System Logo">
+        </div>
+        <h1>Welcome to Invic System</h1>
+        <p>Your ultimate platform for video conferencing and chatting.</p>
+        <a href="{% url 'signup' %}" class="btn">Sign Up</a>
+        <a href="{% url 'login' %}" class="btn">Login</a>
+        <a href="{% url 'admin:index' %}" class="btn">Admin Side</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        textarea {
+            width: 80%;
+            height: 60%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"], input[type="button"] {
+            width: 80%;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input[type="text"] {
+            text-transform: uppercase;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        input[type="button"] {
+            background-color: #4facfe;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        input[type="button"]:hover {
+            background-color: #00f2fe;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+        a.close-btn:hover {
+            background-color: #bbb; /* Darken background color on hover */
+        }
+        a.close-btn {
+            background-color: #5e5858d2;
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
+    <input id="chat-message-input" type="text" size="100" placeholder="Type your message here"><br>
+    <input id="chat-message-submit" type="button" value="Send"><br>
+    <a href="{% url 'chatindex' %}" class="close-btn">Close</a>
+
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.message + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.key === 'Enter') {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+</body>
+</html>

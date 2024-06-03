@@ -1,0 +1,296 @@
+<!-- room.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>MyChat</title>
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'styles/main.css' %}">
+    <script src="{% static 'js/main.js' %}"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            display: flex;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        #chat-window {
+            width: 25%;
+            height: 100%;
+            overflow-y: scroll;
+            transition: width 0.3s ease;
+            z-index: 100; /* Ensure chat window is on top */
+            background-color: #f0f0f0; /* Chat window background color */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .chat-open #chat-window {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        #video-streams {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: width 0.3s ease;
+        }
+
+        .chat-open #video-streams {
+            width: 75%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Chat toggle button styles */
+        #chat-toggle-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        #chat-toggle-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        #chat-toggle-btn.chat-open {
+            background-color: #dc3545;
+        }
+
+        #chat-toggle-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Style for chat log */
+        #chat-log {
+            width: 100%;
+            height: 70%;
+            resize: none;
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Style for chat input */
+        #chat-message-input {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        /* Style for chat submit button */
+        #chat-message-submit {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        #chat-message-submit:hover {
+            background-color: #0056b3;
+        }
+
+        /* Icon wrapper styles */
+        .icon-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .control-icon {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .icon-caption {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'base/main.html' %}
+
+    <main>
+        <section id="room-name-wrapper">
+            <p>Room Name: <span id="room-name"></span></p>
+        </section>
+    
+        <div id="container">
+            <section id="chat-window" class="hidden">
+                <h2>Chat</h2>
+                <textarea id="chat-log" cols="30" rows="10" readonly></textarea>
+                <input id="chat-message-input" type="text" placeholder="Type your message..." />
+                <button id="chat-message-submit">Send</button>
+            </section>
+    
+            <section id="video-streams">
+                <!-- Video streams content goes here -->
+            </section>
+        </div>
+    
+        <section id="controls-wrapper">
+            <div class="icon-wrapper">
+                <img class="control-icon" id="mic-btn" src="{% static 'images/microphone.svg' %}" />
+                <span class="icon-caption">Microphone</span>
+            </div>
+    
+            <div class="icon-wrapper">
+                <img class="control-icon" id="camera-btn" src="{% static 'images/video.svg' %}" />
+                <span class="icon-caption">Camera</span>
+            </div>
+    
+            <div class="icon-wrapper">
+                <img class="control-icon" id="leave-btn" src="{% static 'images/leave.svg' %}" />
+                <span class="icon-caption">Leave</span>
+            </div>
+    
+            <div class="icon-wrapper">
+                <img class="control-icon" id="screen-record-btn" src="{% static 'images/screen-record.svg' %}" />
+                <span class="icon-caption">Record</span>
+            </div>
+    
+            <div class="icon-wrapper">
+                <button id="chat-toggle-btn">
+                    <img src="{% static 'images/chat.png' %}" alt="Chat Toggle">
+                </button>
+            </div>
+        </section>
+    </main>
+    
+    <script type="text/javascript" src="{% static 'assets/AgoraRTC_N-4.8.0.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/streams.js' %}" ></script>
+    <script>
+        let chatToggleBtn = document.getElementById('chat-toggle-btn');
+        let chatWindow = document.getElementById('chat-window');
+        let videoStreams = document.getElementById('video-streams');
+    
+        chatToggleBtn.addEventListener('click', () => {
+            chatWindow.classList.toggle('hidden');
+            document.getElementById('container').classList.toggle('chat-open');
+            chatToggleBtn.classList.toggle('chat-open');
+        });
+    
+        let chatLog = document.getElementById('chat-log');
+        let chatInput = document.getElementById('chat-message-input');
+        let chatSubmit = document.getElementById('chat-message-submit');
+    
+        chatSubmit.addEventListener('click', () => {
+            let message = chatInput.value.trim();
+            if (message !== '') {
+                chatLog.value += `You: ${message}\n`;
+                chatInput.value = ''; // Clear input after sending
+            }
+        });
+    
+        chatInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                chatSubmit.click();
+            }
+        });
+    </script> 
+    
+    <script>
+        let screenRecordBtn = document.getElementById('screen-record-btn');
+        let isRecording = false;
+        let recordedChunks = [];
+        let recorder;
+    
+        function toggleRecordingIcon() {
+            if (isRecording) {
+                screenRecordBtn.src = "{% static 'images/screen-record-active.png' %}";
+            } else {
+                screenRecordBtn.src = "{% static 'images/screen-record.svg' %}";
+            }
+        }
+    
+        screenRecordBtn.addEventListener('click', async () => {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        });
+    
+        async function startRecording() {
+            try {
+                let stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                recorder = new MediaRecorder(stream);
+                recordedChunks = [];
+    
+                recorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+    
+                recorder.onstop = () => {
+                    let blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    saveRecording(blob);
+                    toggleRecordingIcon();
+                };
+    
+                recorder.start();
+                isRecording = true;
+                toggleRecordingIcon();
+            } catch (error) {
+                console.error('Error starting screen recording:', error);
+            }
+        }
+    
+        function stopRecording() {
+            isRecording = false;
+            recorder.stop();
+            toggleRecordingIcon();
+        }
+    
+        function saveRecording(blob) {
+            let url = URL.createObjectURL(blob);
+            let downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = 'screen_recording.webm';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
+</body>
+</html>

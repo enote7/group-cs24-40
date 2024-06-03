@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>All Answers</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/q1.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            transition: background-image 3s ease-in-out;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Table Styles */
+        table {
+            width: 50%;
+            margin: 0 auto;
+            /* Center the table */
+        }
+
+        /* Table Header Styles */
+        thead {
+            background-color: #067cfaa1;
+            /* Light blue */
+            color: #fff;
+        }
+
+        /* Table Header Cell Styles */
+        th {
+            padding: 10px;
+            text-align: left;
+        }
+
+        /* Table Body Styles */
+        tbody tr:nth-child(even) {
+            background-color: #8d8a8a;
+            /* Light grey */
+        }
+
+        /* Table Body Cell Styles */
+        td {
+            padding: 10px;
+        }
+
+        /* Hover Effect */
+        tbody tr:hover {
+            background-color: #ddd;
+            /* Dark grey */
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #067cfaa1;
+            padding: 10px 0;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #ff004098;
+        }
+
+        /* Search Styles */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input[type=text] {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Not Found Message Styles */
+        .not-found-message {
+            text-align: center;
+            margin-top: 20px;
+            color: rgb(229, 255, 0);
+        }
+
+        .highlight-background {
+            background-color: rgba(0, 0, 0, 0.548);
+            padding: 5px;
+        }
+
+        .not-found-message a {
+            text-decoration: none;
+            color: blue;
+            font-weight: bold;
+        }
+        .animation-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 10px solid;
+            border-color: red yellow red yellow;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+            <li><a href="{% url 'lobby' %}">Lobby</a></li>
+            <li><a href="{% url 'room' %}">Room</a></li>
+            <li><a href="{% url 'chatindex' %}">Chat</a></li>
+            <li><a href="{% url 'email_form' %}">Email Participants</a></li>
+            <li><a href="{% url 'aboutus' %}">About Us</a></li>
+            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <div class="animation-container"></div>
+
+    <h1 style="text-align: center;">FREQUENTLY ASKED QUESTIONS <p style="font-size: 30px; text-align: center;">🤔</p>?
+    </h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for a similar Question  or Answer ...">
+    </div>
+    <p class="not-found-message"><span class="highlight-background"> NOT FOUND? Don't worry, you can proceed asking your
+            own Question
+        </span><a href="{% url 'contactus' %}">HERE 😀</a></p><br><br>
+    <table id="answersTable">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>User</th>
+                <th>Answer</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for answer in all_answers %}
+            <tr style="background-color: rgba(172, 26, 50, 0.774); color: rgb(229, 255, 0);">
+                <td>{{ answer.question.question_text }}</td>
+                <td>{{ answer.user }}</td>
+                <td>{{ answer.answer_text }}</td>
+                <td>{{ answer.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        // Get the input field and table
+        var input = document.getElementById("searchInput");
+        var table = document.getElementById("answersTable");
+        // Get all rows in the table except for the header
+        var rows = table.getElementsByTagName("tr");
+        // Add event listener to input field
+        input.addEventListener("input", function () {
+            var filter = input.value.toLowerCase(); // Convert input to lowercase
+            // Loop through all table rows
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td"); // Get cells in the current row
+                var found = false; // Flag to track if the search word is found in any cell
+                // Loop through all cells in the current row
+                for (var j = 0; j < cells.length; j++) {
+                    var cellText = cells[j].innerText.toLowerCase(); // Get cell text and convert to lowercase
+                    // Check if cell text contains the search word
+                    if (cellText.indexOf(filter) > -1) {
+                        found = true;
+                        break; // Exit inner loop if found
+                    }
+                }
+                // Show or hide row based on search result
+                if (found) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        });
+    </script>
+    <!-- JavaScript for changing background image -->
+    <script>
+        const imageUrls = [
+            "{% static 'images/q1.jpg' %}",
+            "{% static 'images/q2.jpg' %}",
+            "{% static 'images/q3.jpg' %}",
+            "{% static 'images/q4.jpg' %}",
+            "{% static 'images/q5.jpg' %}",
+            "{% static 'images/q6.jpg' %}",
+            "{% static 'images/q7.jpg' %}",
+            "{% static 'images/q8.jpg' %}",
+            "{% static 'images/q9.jpg' %}",
+            "{% static 'images/q10.jpg' %}"
+        ];
+
+        let currentImageIndex = 0;
+
+        function changeBackgroundImage() {
+            document.body.style.backgroundImage = `url(${imageUrls[currentImageIndex]})`;
+            currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
+        }
+
+        setInterval(changeBackgroundImage, 3000);
+    </script>
+</body>
+
+</html>

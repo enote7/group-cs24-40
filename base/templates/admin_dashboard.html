@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'images/q2.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            transition: background-image 3s ease-in-out;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff7e;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button.btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button.btn:hover {
+            background-color: #0056b3;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #067cfaa1;
+            padding: 10px 0;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #ff004098;
+        }
+
+        .animation-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 10px solid;
+            border-color: red yellow red yellow;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'all_answers' %}">FAQs</a></li>
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'lobby' %}">Lobby</a></li>
+            <li><a href="{% url 'chatindex' %}">Chat</a></li>
+            <li><a href="{% url 'email_form' %}">Email Participants</a></li>
+            <li><a href="{% url 'aboutus' %}">About Us</a></li>
+            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="animation-container"></div>
+        <h1>Admin Dashboard</h1>
+
+        {% if current_question %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Submit Answer</button>
+        </form>
+        {% endif %}
+
+        <h2>Unanswered Questions</h2>
+        {% if unanswered_questions %}
+        {% for question in unanswered_questions %}
+        <div class="question">
+            <p>{{ question.question_text }}</p>
+            <a href="{% url 'answer_question' question.id %}">Answer Question</a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No unanswered questions.</p>
+        {% endif %}
+    </div>
+    <!-- JavaScript for changing background image -->
+    <script>
+        const imageUrls = [
+            "{% static 'images/q1.jpg' %}",
+            "{% static 'images/q2.jpg' %}",
+            "{% static 'images/q3.jpg' %}",
+            "{% static 'images/q4.jpg' %}",
+            "{% static 'images/q5.jpg' %}",
+            "{% static 'images/q6.jpg' %}",
+            "{% static 'images/q7.jpg' %}",
+            "{% static 'images/q8.jpg' %}",
+            "{% static 'images/q9.jpg' %}",
+            "{% static 'images/q10.jpg' %}"
+        ];
+
+        let currentImageIndex = 0;
+
+        function changeBackgroundImage() {
+            document.body.style.backgroundImage = `url(${imageUrls[currentImageIndex]})`;
+            currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
+        }
+
+        setInterval(changeBackgroundImage, 3000);
+    </script>
+</body>
+
+</html>

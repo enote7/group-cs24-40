@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Invic System User Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'images/q10.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            transition: background-image 3s ease-in-out;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #e7e2e2bb;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            background-color: #ffeb3b;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-width: 200px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #067cfaa1;
+            padding: 10px 0;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #ff004098;
+        }
+
+        .profile-picture {
+            width: 150px;
+            /* Adjust the width as needed */
+            height: 150px;
+            /* Adjust the height as needed */
+            border-radius: 50%;
+            /* Make the image round */
+            object-fit: cover;
+            /* Ensure the image covers the entire space */
+            border: 2px solid #fff;
+            /* Add a border */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a shadow */
+        }
+
+        /* Adjust the margin to position the profile picture */
+        .profile-picture-container {
+            margin-top: 20px;
+            text-align: center;
+            /* Center the profile picture */
+        }
+
+        .username {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: red;
+        }
+        .animation-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 10px solid;
+            border-color: red yellow red yellow;
+            animation: spin 2s linear infinite;
+        }
+ 
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'all_answers' %}">FAQs</a></li>
+            <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+            <li><a href="{% url 'lobby' %}">Lobby</a></li>
+            <li><a href="{% url 'chatindex' %}">Chat</a></li>
+            <li><a href="{% url 'email_form' %}">Email Participants</a></li>
+            <li><a href="{% url 'aboutus' %}">About Us</a></li>
+            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+            <li><a href="{% url 'add_admin_staff_number' %}">Add Staff Number?</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <div class="animation-container"></div>
+    <!-- Display profile picture and username -->
+    <div class="profile-info-container">
+        <div class="profile-picture-container">
+            {% if user.is_authenticated %}
+            {% if user.profile_picture %}
+            <img class="profile-picture" src="{{ user.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+            <img class="profile-picture" src="{% static 'images/default_profile_picture.jpg' %}" alt="Profile Picture">
+            {% endif %}
+            <p class="username">{{ user.username }}, welcome 🤷‍♂️</p> <!-- Display username -->
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="logo">
+            <img src="{% static 'images/inc.jpg' %}" alt="Invic System Logo">
+        </div>
+        <h1>Welcome to Invic System</h1>
+        <p>Invic System is your ultimate platform for video conferencing and chatting. Below is a quick user guide to
+            help you navigate the platform and make the most out of its features.</p>
+        <h2>Pages You Can Access</h2>
+        <div class="animation-container"></div>
+        <ul>
+            <li><a href="{% url 'signup' %}">Signup</a>: Create a new account to start using the platform.</li>
+            <li><a href="{% url 'login' %}">Login</a>: Access your account by logging in.</li>
+            <li><a href="{% url 'admin:index' %}">Admin Side</a>: For administrators to manage the platform.</li>
+            <li><a href="{% url 'upload' %}">Upload Recorded Video</a>: Upload your conference recordings (Admin Staff
+                only).</li>
+            <li><a href="{% url 'video_list' %}">Download Recorded Videos</a>: Download recorded videos from the
+                database (all users).</li>
+        </ul>
+
+        <h2>How to Chat</h2>
+        <p>To start a chat with another user, follow these steps:</p>
+        <ol>
+            <li>Login to your account.</li>
+            <li>Go to the chat section available on your dashboard.</li>
+            <li>Select the user you want to chat with from the list.</li>
+            <li>Type your message in the input box and press Enter to send.</li>
+        </ol>
+
+        <h2>How to Join a Video Call</h2>
+        <p>To join a video conference call, follow these steps:</p>
+        <ol>
+            <li>Login to your account.</li>
+            <li>Go to the video call section available on your dashboard.</li>
+            <li>Click on the "Join Call" button for the ongoing conference you wish to join.</li>
+            <li>Allow your browser to access your camera and microphone when prompted.</li>
+            <li>Enjoy your video conference call!</li>
+        </ol>
+
+        <div class="alert">
+            Note: Only users with Admin Staff privileges can upload and download recorded videos. If you encounter any
+            issues or have questions, please contact support.
+        </div>
+    </div>
+</body>
+
+</html>

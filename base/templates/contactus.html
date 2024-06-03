@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Contact Us - Invic System</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'images/q1.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            transition: background-image 3s ease-in-out;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #b626262d;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #00f7ff;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #00ffea;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ffe600;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button.btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button.btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Social Icons */
+        ul.social-icons {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.social-icons li {
+            margin-bottom: 20px;
+        }
+
+        ul.social-icons li a {
+            background-color: rgba(255, 255, 255, 0.466);
+            color: blue;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        ul.social-icons li img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        ul.social-icons li i {
+            font-size: 20px;
+            margin-top: 5px;
+        }
+
+        .contact-name {
+            margin-top: 10px;
+        }
+
+        .contact-name img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #067cfaa1;
+            padding: 10px 0;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #ff004098;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'lobby' %}">Lobby</a></li>
+            <li><a href="{% url 'chatindex' %}">Chat</a></li>
+            <li><a href="{% url 'email_form' %}">Email</a></li>
+            <li><a href="{% url 'aboutus' %}">About Us</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>Having any questions? Feel free to reach out to us using the form below:</p>
+        <form method="post" id="contactForm">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.question_text.label_tag }}
+                {{ form.question_text }}
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+
+        <h2>Connect with Us</h2>
+        <ul class="social-icons">
+            <li>
+                <a href="mailto:info@invicsystem.com">
+                    <i class="fas fa-envelope"></i> Email
+                </a>
+            </li>
+            <li>
+                <a href="https://www.youtube.com/invicsystem">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
+            </li>
+            <li>
+                <a href="https://www.linkedin.com/company/invicsystem">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+            </li>
+            <li>
+                <a href="https://www.instagram.com/invicsystem">
+
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/invicsystem">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+            </li>
+            <li>
+                <a href="https://www.tiktok.com/@invicsystem">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+            </li>
+            <li class="contact-name">
+                <img src="{% static 'images/q3.jpg' %}" alt="Frank">
+                <i class="fas fa-phone"></i> Frank: <a href="tel:+256700953178">+256 700 953178</a>
+            </li>
+            <li class="contact-name">
+                <img src="{% static 'images/q9.jpg' %}" alt="Maggie">
+                <i class="fas fa-phone"></i> Maggie: <a href="tel:+256757109861">+256 757 109861</a>
+            </li>
+            <li class="contact-name">
+                <img src="{% static 'images/q2.jpg' %}" alt="Sarah">
+                <i class="fas fa-phone"></i> Sarah: <a href="tel:+256779830890">+256 779 830890</a>
+            </li>
+            <li class="contact-name">
+                <img src="{% static 'images/q4.jpg' %}" alt="Edward">
+                <i class="fas fa-phone"></i> Edward: <a href="tel:+256759112185">+256 759 112185</a>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>About Invic System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #29556e;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff65;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .feature {
+            margin-bottom: 20px;
+        }
+        .feature h2 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        .team {
+            margin-top: 30px;
+        }
+        .team h2 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        .team-member {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .team-member img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        /* Navbar Styles */
+        .navbar {
+            background-color: #067cfaa1;
+            padding: 10px 0;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .navbar li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #ff004098;
+        }
+        .animation-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 10px solid;
+            border-color: red yellow red yellow ;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'lobby' %}">Lobby</a></li>
+            <li><a href="{% url 'chatindex' %}">Chat</a></li>
+            <li><a href="{% url 'email_form' %}">Email</a></li>
+            <li><a href="{% url 'admin_dashboard' %}">Admin Dash</a></li>
+            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="animation-container"></div>
+        <h1>About Invic System</h1>
+
+        <h2>Our Mission</h2>
+        <p>At Invic System, our mission is to revolutionize virtual communication by providing a reliable, secure, and user-friendly platform for video conferencing and chatting.</p>
+
+        <h2>Our Objectives</h2>
+        <ul>
+            <li>Enhance virtual collaboration among teams and individuals.</li>
+            <li>Ensure high-quality and uninterrupted video conferencing experiences.</li>
+            <li>Promote seamless and efficient communication through real-time chat messaging.</li>
+            <li>Adhere to the highest standards of security and privacy for user data.</li>
+            <li>Continuously innovate and improve our platform to meet the evolving needs of our users.</li>
+        </ul>
+
+        <div class="feature">
+            <h2>Key Features</h2>
+            <ul>
+                <li>High-quality video conferencing</li>
+                <li>Real-time chat messaging</li>
+                <li>User-friendly interface</li>
+                <li>Secure and encrypted communication</li>
+                <li>Flexible and scalable architecture</li>
+            </ul>
+        </div>
+
+        <div class="team">
+            <h2>Meet Our Team</h2>
+            <div class="team-member">
+                <img src="{% static 'images/q3.jpg' %}" alt="Team Member 1">
+                <div>
+                    <h3>Frank Ssekanjako</h3>
+                    <p>Founder & CEO</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'images/q9.jpg' %}" alt="Team Member 2">
+                <div>
+                    <h3>Margaret Nampewo</h3>
+                    <p>Head of Development</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'images/q4.jpg' %}" alt="Team Member 3">
+                <div>
+                    <h3>Edward Kezaala</h3>
+                    <p>Lead Designer</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'images/q2.jpg' %}" alt="Team Member 3">
+                <div>
+                    <h3>Sarah Natifu</h3>
+                    <p>Lead Chairman of Developement</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
